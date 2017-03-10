@@ -10,186 +10,170 @@ double pos_cent[3];
 
 PointCloud pointCloud[90000];
 PointCloud inpPointCloud[90000];
-Expert expert;
-
-int i;
 
 int main(int argc, char *argv[])
 {
+    unsigned short nrepeats =1;
+
     QApplication a(argc, argv);
-    //MainWindow w;
-    //w.show();
 
     // Instantiate the viewer.
     Viewer viewer;
-    viewer.setWindowTitle("simpleViewer");
+    Viewer viewer2;
 
-    // Make the viewer window visible on screen.
+    viewer.setWindowTitle("raw data");
+    viewer2.setWindowTitle("learned data");
 
-    viewer.show();
+    viewer.drawMode = 0; //raw data
+    viewer2.drawMode = 1;//learned
+
     readPointClouds("oakland_part3_am_rf_no_label.node_features");
 
     findCentroid();
 
     unsigned long pcInd = 0;
     unsigned long inPCInd = 0;
-    double learningRate;
-    double lam;
+    int i,j;
 
+    double W[5][10];
     PointCloud* pc;
-    Expert* e  = &expert;
-    //-----------------------------------------
+
     //initialize weights
-    for(i=0;i<10;i++){
-        e->w[i] = 0.0;
-    }
-
-    learningRate = 1/sqrt(npoints);
-    lam =10.0;
-    pcInd = 0;
-    inPCInd = 0;
-
-    //for (pcInd = 0; pcInd < npoints;pcInd++){
-        for (pcInd = 0; pcInd < 1000;pcInd++){
-        pc =  &pointCloud[pcInd];
-
-        if(pc->svm_label !=0){//only update if either one of two classes
-
-            for(i=0;i<10;i++){
-                e->w[i] -= learningRate*lam*e->w[i];
-            }
-
-            //if misrank
-
-
+    for(i=0;i<5;i++){
+        for(j=0;j<10;j++){
+            W[i][j] = 1.0;
         }
-
-
     }
 
-
-
-    //--------------------------------------------
-#if 0
-
-    Expert* e  = &expert;
-
-    //initialize weights
-    for(i=0;i<10;i++){
-        e->w[i] = 1.0;
-    }
-
-    double prediction = 0.0;
-    double pred_m_obs;
-    double gradLoss[10];
-    double learningRate = 1/sqrt(npoints);
-    qDebug() << "learning rate" << learningRate;
-
+//----------------------------------------------------------------
     //reshuffle point cloud
-    unsigned short nrepeats =0;
 
-learningRate =  1/sqrt(npoints*35);
-    while (nrepeats <35){
+    unsigned short irepeats =0;
 
-    pcInd = 0;
-    inPCInd = 0;
+    double learningRate =  1/sqrt(npoints*nrepeats);
+    while (irepeats <nrepeats){
 
-qDebug() << nrepeats;
-while ( inPCInd < npoints ){
- inpPointCloud[inPCInd].node_label = 0;
- inPCInd++;
-}
- inPCInd =0;
+        pcInd = 0;
+        inPCInd = 0;
 
-    while ( pcInd < npoints ){
-        pc =  &pointCloud[pcInd];
+        qDebug() << irepeats;
+        while ( inPCInd < npoints ){
+            inpPointCloud[inPCInd].node_label = 0;
+            inPCInd++;
+        }
+        inPCInd =0;
 
-        inPCInd = (qrand()+ qrand() +qrand())%npoints;
+        while ( pcInd < npoints ){
+            pc =  &pointCloud[pcInd];
 
-        if (inpPointCloud[inPCInd].node_label == 0){//not taken yet
-            for(i=0;i<3;i++){
-                inpPointCloud[inPCInd].pos[i] = pc->pos[i];
+            inPCInd = (qrand()+ qrand() +qrand())%npoints;
+
+            if (inpPointCloud[inPCInd].node_label == 0){//not taken yet
+                for(i=0;i<3;i++){
+                    inpPointCloud[inPCInd].pos[i] = pc->pos[i];
+                }
+
+                inpPointCloud[inPCInd].node_label = pc->node_label;
+
+                for(i=0;i<5;i++){
+                    inpPointCloud[inPCInd].node_vec[i] = pc->node_vec[i];
+                }
+
+                for(i=0;i<10;i++){
+                    inpPointCloud[inPCInd].features[i] = pc->features[i];
+                }
+
+                pcInd++;
+            }
+        }
+
+        //-----------------------------------------------------------------
+
+        //do the learning
+        for (pcInd = 0; pcInd < npoints;pcInd++){
+            pc =  &inpPointCloud[pcInd];
+
+            double f[10][1];
+            double Wf[5][1];
+            double Wf_y[5][1];
+            double y[5][1];
+            double Wf_yT[1][5];
+            double f2[10][1];
+            double f2Wf_yT[10][5];
+            double dLoss[5][10];
+
+            for (i=0;i<5;i++){
+                y[i][0] = pc->node_vec[i];
+            }
+            for (i=0;i<10;i++){
+                f[i][0]  = pc->features[i];
+                f2[i][0] = 2.0*f[i][0];
             }
 
-            inpPointCloud[inPCInd].node_label = pc->node_label;
-            inpPointCloud[inPCInd].node = pc->node;
+            mat_mult((double *) W, 5,10,(double *)f,10,1,(double *)Wf);
+            mat_sub ((double *) Wf,5, 1,(double *)y, (double *)Wf_y);
+            mat_transpose((double *) Wf_y ,5,1,(double *) Wf_yT);
+            mat_mult((double *)f2,10,1,(double *)Wf_yT,1,5,(double *)f2Wf_yT);
+            mat_transpose((double *) f2Wf_yT ,10,5,(double *) dLoss);
 
-            for(i=0;i<10;i++){
-                inpPointCloud[inPCInd].features[i] = pc->features[i];
+            for(i=0;i<5;i++){
+                for(j=0;j<10;j++){
+                    W[i][j] -= learningRate*dLoss[i][j];
+                }
             }
-
-            pcInd++;
         }
+
+        irepeats++;
     }
-
-
-    for (pcInd = 0; pcInd < npoints;pcInd++){
-       // for (pcInd = 0; pcInd < 1000;pcInd++){
-        pc =  &inpPointCloud[pcInd];
-
-        prediction = 0.0;
-        for(i=0;i<10;i++){
-            prediction += e->w[i]*pc->features[i];
-        }
-        //pred_m_obs = prediction - pc->node_label;
-        pred_m_obs = prediction - pc->node;
-        //loss = pred_m_obs*pred_m_obs;
-
-        //find gradient  of loss
-        for(i=0;i<10;i++){
-            gradLoss[i] = 2.0*pred_m_obs*pc->features[i];
-        }
-
-        //update the weight
-        //learningRate =  1/sqrt((pcInd+1)*(nrepeats+1));
-        for(i=0;i<10;i++){
-            e->w[i] -= learningRate*gradLoss[i];
-        }
-
-        //maintain convexity by scale back the norm
-        double norm2 =0.0;
-        for(i=0;i<10;i++){
-            norm2 += e->w[i]*e->w[i];
-        }
-
-        double normBound = 1e3;
-        double normBound2 = normBound*normBound;
-        /*if (norm2 > normBound2){
-            for(i=0;i<10;i++){
-                e->w[i] = e->w[i]/normBound;
-            }
-        }*/
-
-       // qDebug()<< nrepeats  << pcInd ;
-    }
-
-    nrepeats++;
-
-    }
-
+    //-----------------------------------------------------------------
     //learning is completed
     //test performance
-    for(i=0;i<10;i++){
-        qDebug() << e->w[i];
-    }
 
-
-    for (pcInd = 0; pcInd < 1000;pcInd++){
+    for (pcInd = 0; pcInd < npoints;pcInd++){
         PointCloud* pc =  &pointCloud[pcInd];
-        prediction = 0.0;
-
-        for(i=0;i<10;i++){
-            prediction += e->w[i]*pc->features[i];
+        double Wf[5][1];
+        double f[10][1];
+        for (i=0;i<10;i++){
+            f[i][0]  = pc->features[i];
         }
-        qDebug() <<  prediction << pc->node;
+        mat_mult((double *) W, 5,10,(double *)f,10,1,(double *)Wf);
+
+        //which node does it predict?
+        int max_element = 6;
+        double max_element_value  =0.0;
+        for (i=0;i<5;i++){
+            if (Wf[i][0] > max_element_value){
+                max_element_value = Wf[i][0];
+                max_element = i;
+            }
+        }
+
+        switch (max_element){
+        case 0:
+            pc->learned_label = NODE_VEG;
+            break;
+        case 1:
+            pc->learned_label = NODE_WIRE;
+            break;
+        case 2:
+            pc->learned_label = NODE_POLE;
+            break;
+        case 3:
+            pc->learned_label = NODE_GROUND;
+            break;
+        case 4:
+            pc->learned_label = NODE_FACADE;
+            break;
+        }
     }
-#endif
+
+    viewer.show();
+    viewer2.show();
 
     return a.exec();
 }
 
 void findCentroid(){
-    //find centroid
     unsigned long pcInd = 0;
     double sum_pos[3];
     PointCloud *pc;
@@ -204,8 +188,6 @@ void findCentroid(){
     pos_cent[0] = sum_pos[0]/npoints;
     pos_cent[1] = sum_pos[1]/npoints;
     pos_cent[2] = sum_pos[2]/npoints;
-    //qDebug() << pos_cent[0] << pos_cent[1] << pos_cent[2];
-
 }
 
 void readPointClouds(char *fileName){
@@ -216,7 +198,6 @@ void readPointClouds(char *fileName){
         return ;
     }
 
-    unsigned short i;
     unsigned long pcInd = 0;
     unsigned short dummy;
     int done =0;
@@ -233,21 +214,19 @@ void readPointClouds(char *fileName){
 
         switch (pc->node_label){
         case NODE_VEG:
-            pc->node = 10;
-            pc->svm_label = -1;
+            pc->node_vec[0] = 1.0; pc->node_vec[1] = 0.0; pc->node_vec[2] = 0.0; pc->node_vec[3] = 0.0; pc->node_vec[4] = 0.0;
             break;
         case NODE_WIRE:
-            pc->node = 20;
+            pc->node_vec[0] = 0.0; pc->node_vec[1] = 1.0; pc->node_vec[2] = 0.0; pc->node_vec[3] = 0.0; pc->node_vec[4] = 0.0;
             break;
         case NODE_POLE:
-            pc->node = 30;
+            pc->node_vec[0] = 0.0; pc->node_vec[1] = 0.0; pc->node_vec[2] = 1.0; pc->node_vec[3] = 0.0; pc->node_vec[4] = 0.0;
             break;
         case NODE_GROUND:
-            pc->node = 40;
+            pc->node_vec[0] = 0.0; pc->node_vec[1] = 0.0; pc->node_vec[2] = 0.0; pc->node_vec[3] = 1.0; pc->node_vec[4] = 0.0;
             break;
         case NODE_FACADE:
-            pc->node = 50;
-            pc->svm_label = 1;
+            pc->node_vec[0] = 0.0; pc->node_vec[1] = 0.0; pc->node_vec[2] = 0.0; pc->node_vec[3] = 0.0; pc->node_vec[4] = 1.0;
             break;
         }
 
@@ -259,10 +238,51 @@ void readPointClouds(char *fileName){
     }
 
     npoints = pcInd;
+}
 
-    /*
-qDebug() << pcInd << pc->pos[0] << pc->pos[1] << pc->pos[2] << pc->node_label;
-for (i=0;i<10;i++){qDebug() << i << pc->features[i];}
-*/
+void mat_init( double *in, int rows, int cols, double init_val ) {
+
+    int i;
+    for( i=0; i<rows*cols; i++ )
+        in[i] = init_val;
+
+}
+
+void mat_mult( double *A, int na, int ma,
+               double *B, int nb, int mb,
+               double *C ) {
+
+    int i, j, k;
+
+    if( ma != nb ){return;}
+
+    mat_init( C, na, mb, 0.0 );
+
+    for( i = 0; i < na; i++ )
+        for( j = 0; j < mb; j++ )
+            for( k = 0; k < ma; k++ )
+                C[i*mb+j] += A[i*ma+k]*B[k*mb+j];
+
+}
+
+void mat_transpose( double *A, int na, int ma, double *C ) {
+
+    int i, j;
+
+    mat_init( C, ma, na, 0.0 );
+
+    for( i = 0; i < na; i++ )
+        for( j = 0; j < ma; j++ )
+            C[j*na+i] = A[i*ma+j];
+
+}
+
+void mat_sub( double *A, int na, int ma, double *B, double *C ) {
+
+    int i, j;
+
+    for( i = 0; i < na; i++ )
+        for( j = 0; j < ma; j++ )
+            C[i*ma+j] = A[i*ma+j] - B[i*ma+j];
 
 }

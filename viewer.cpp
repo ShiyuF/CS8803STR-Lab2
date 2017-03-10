@@ -7,6 +7,7 @@ GLuint index;
 // Draws a spiral
 void Viewer::draw()
 {
+    short drawingLabel;
     // Draw an axis using the QGLViewer static function
     glClearColor (0.0,0.0,0.0,1.0);
 
@@ -19,7 +20,17 @@ void Viewer::draw()
 
     for (pcInd=0; pcInd < npoints; pcInd++ ){
         pc = &pointCloud[pcInd];
-        switch (pc->node_label){
+
+        switch(drawMode){
+        case 0:
+        drawingLabel = pc->node_label;
+            break;
+        case 1:
+        drawingLabel = pc->learned_label;
+            break;
+        }
+
+        switch (drawingLabel){
         case NODE_VEG:
             glColor4f(0.0, 1.0f , 0.0f,1.0f);
             break;
@@ -27,7 +38,7 @@ void Viewer::draw()
             glColor4f(0.2, 0.2f , 0.2f,1.0f);
             break;
         case NODE_POLE:
-            glColor4f(0.6, 0.6f , 0.6f,1.0f);
+            glColor4f(1.0, 1.0f , 1.0f,1.0f);
             break;
         case NODE_GROUND:
             glColor4f(0.5, 0.27f , 0.07f,1.0f);

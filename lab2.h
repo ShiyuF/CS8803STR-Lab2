@@ -10,19 +10,22 @@
 extern struct PointCloud{
   float pos[3];
   short node_label;
-  short node;
-  short svm_label;
+  float node_vec[5];
+  float learned_label;
   float features[10];
 } pointCloud[90000],inpPointCloud[90000];
-
-extern struct Expert{
-    double w[10];
-} expert;
 
 extern unsigned long npoints;
 extern double pos_cent[3];
 void readPointClouds(char *fileName);
 void findCentroid();
+
+void mat_init( double *in, int rows, int cols, double init_val );
+void mat_transpose( double *A, int na, int ma, double *C );
+void mat_mult( double *A, int na, int ma,
+               double *B, int nb, int mb,
+               double *C );
+void mat_sub( double *A, int na, int ma, double *B, double *C );
 
 #endif // LAB2_H
 

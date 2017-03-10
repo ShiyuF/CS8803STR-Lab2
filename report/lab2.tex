@@ -45,29 +45,35 @@ where
 We choose the learning rate $\alpha = \frac{1}{\sqrt{T}}$. Our algorithm reshuffles the given data and pass them through the learning algorithm several times.  
 
 \subsection{Results}
-We implement the result using C++ and Qt framework. The visualization is done by an OpenGL wrapper called LibQGLViewer. The result of the classification is shown in Fig. \ref{fig:result from classification}.
+We implement the result using C++ and Qt framework. We use OpenGL for visualization. The results of classification after learning both datasets are shown in Fig. \ref{fig:learned1} and Fig. \ref{fig:learned2}.
 \begin{figure}
   \centering
-  \includegraphics[scale = 0.3]{raw_cloud}
-\caption{given data}
+  \includegraphics[scale = 0.4]{raw1}
+\caption{given Dataset 1}
+\includegraphics[scale = 0.4]{learned1}
+\caption{classified Dataset 1}
+\label{fig:learned1}
+  \includegraphics[scale = 0.4]{raw2}
+\caption{given Dataset 2}
+\includegraphics[scale = 0.4]{learned2}
+\caption{classified Dataset 2}
+\label{fig:learned2}
 \end{figure}
+ Here we showed classification after 10 passes of both datasets. However, we discovered that passing datasets twice is already sufficient to obtain a consistent W. There is very little difference in outcome between 2 and 10 passes. 
 
-\begin{figure}
+\pagebreak
+
+Fig \ref{fig:learned1_apply2} shows another test case. In this case, we learn with Dataset 1 and use W to classify Dataset 2.\\
+
+Wires and poles do not get classified very well for many potential reasons. One reason is they are consideraly "thinner features". Poles and wires have very little feature content in transverse direction. Other features are easier to classify because they are clumped. Size, density, and color information of clumped features are easier to extract.  We also note that we have much less samples of poles and wires in the  training set. This is especially true in our second test case where we learn data using Dataset 1 (which do not have many wires) and attempt classify Dataset 2. Fig. shows that wires are classified very poorly. \\
+
+As often the case, choice of implemention is a direct tradeoff between implementation difficulty and CPU time. Our choice of C++ makes the learning and classification very fast. However, some implementation such as matrix multiplication is not trivial. Overall the algorithm is not difficult to implement.
+
+\begin{figure}[h]
   \centering
-  \includegraphics[scale = 0.3]{learned_cloud}
-\caption{result from classification}
-\label{fig:result from classification}
+\includegraphics[scale = 0.4]{learned1_apply2}
+\caption{classification of Dataset 2 by learning Dataset 1}
+\label{fig:learned1_apply2}
 \end{figure}
-
- Here we showed classification after 10 passes of learning data. We see significant improvement by passing through the learning data twice when compared to passing it only once. There is however a little difference in classification performance when compare 10 passes learning versus 2 passes learning.
-
-Wire and pole do not get classified very well for many potential reasons.
-
-
-
-
-
-
-
 
 \end{document}

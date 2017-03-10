@@ -8,6 +8,7 @@ class Viewer : public QGLViewer
 {
 public :
     int drawMode; //0 original 1 learned
+    int drawingData; //1 am 2 an
 protected :
   virtual void draw();
   virtual void init();

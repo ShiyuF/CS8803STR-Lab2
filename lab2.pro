@@ -26,12 +26,5 @@ FORMS    += mainwindow.ui
 #libQGLViewer for opengl and map
 LIBS += -lopengl32 -lglu32
 
-
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../../libQGLViewer-2.6.4/QGLViewer/release/ -lQGLViewer
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../../libQGLViewer-2.6.4/QGLViewer/debug/ -lQGLViewer
-else:mac: LIBS += -F$$PWD/../../../../../../../libQGLViewer-2.6.4/QGLViewer/ -framework QGLViewer
-else:unix: LIBS += -L$$PWD/../../../../../../../libQGLViewer-2.6.4/QGLViewer/ -lQGLViewer
-
-INCLUDEPATH += $$PWD/../../../../../../../libQGLViewer-2.6.4/QGLViewer
-DEPENDPATH += $$PWD/../../../../../../../libQGLViewer-2.6.4/QGLViewer
+INCLUDEPATH += C:/libQGLViewer263
+LIBS += -LC:/libQGLViewer263/QGLViewer -lQGLViewer2

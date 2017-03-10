@@ -7,6 +7,7 @@ GLuint index;
 // Draws a spiral
 void Viewer::draw()
 {
+    unsigned long npoints;
     short drawingLabel;
     // Draw an axis using the QGLViewer static function
     glClearColor (0.0,0.0,0.0,1.0);
@@ -18,8 +19,25 @@ void Viewer::draw()
 
     glBegin(GL_POINTS);
 
+    switch (drawingData){
+    case 1:
+        npoints = npoints1;
+        break;
+    case 2:
+        npoints = npoints2;
+        break;
+    }
+
     for (pcInd=0; pcInd < npoints; pcInd++ ){
-        pc = &pointCloud[pcInd];
+
+        switch (drawingData){
+        case 1:
+            pc = &pointCloud1[pcInd];
+            break;
+        case 2:
+            pc = &pointCloud2[pcInd];
+            break;
+        }
 
         switch(drawMode){
         case 0:
@@ -47,8 +65,16 @@ void Viewer::draw()
             glColor4f(1.0, 0.89f , 0.77f,1.0f);
             break;
         }
-        glVertex3f(pc->pos[0]-pos_cent[0], pc->pos[1]-pos_cent[1], pc->pos[2]-pos_cent[2]);
-    }
+
+        switch (drawingData){
+        case 1:
+            glVertex3f(pc->pos[0]-pos_cent1[0], pc->pos[1]-pos_cent1[1], pc->pos[2]-pos_cent1[2]);
+            break;
+        case 2:
+            glVertex3f(pc->pos[0]-pos_cent2[0], pc->pos[1]-pos_cent2[1], pc->pos[2]-pos_cent2[2]);
+            break;
+        }
+            }
     glEnd();
 
 }

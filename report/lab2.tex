@@ -1,6 +1,6 @@
 \documentclass[letterpaper]{article}
 \title{Lab1 Report }
-\date{Due: Feb 13th 3017}
+\date{Due: Mar 13th 3017}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -20,13 +20,11 @@
 \section{Gradient Descent on Squared Loss}
 
 \subsection{Algorithm}
-We define loss function to be
+We define the loss function to be
 \begin{align}
 l_i (t) &= ||W_t f_i - y_i||^2
 \end{align}
-
- where $f \in  \mathbb{R}^{10}$ is the feature vector given by the problem.  $W \in  \mathbb{R}^{5x10}$ is the weight matrix that we seek to learn. $y_i \in  \mathbb{R}^5$ is the indicator vector corresponds to each label. We remap the labels to be.
-
+where $f_i \in  \mathbb{R}^{10}$ is a feature vector given by the problem.  $W \in  \mathbb{R}^{5x10}$ is the weight matrix that we seek to learn. $y_i \in  \mathbb{R}^5$ is an indicator vector corresponds to each label. We remap the labels to be.
 \begin{itemize}
 \item Veg : $y = [ \ 1 \ 0 \ 0 \ 0 \ 0 \ ]^T$
 \item Wire :$y = [ \ 0 \ 1 \ 0 \ 0 \ 0 \ ]^T$
@@ -45,7 +43,7 @@ where
 We choose the learning rate $\alpha = \frac{1}{\sqrt{T}}$. Our algorithm reshuffles the given data and pass them through the learning algorithm several times.  
 
 \subsection{Results}
-We implement the result using C++ and Qt framework. We use OpenGL for visualization. The results of classification after learning both datasets are shown in Fig. \ref{fig:learned1} and Fig. \ref{fig:learned2}.
+We implement the result using C++ and Qt framework. We use OpenGL for visualization. The result of classification after learning both datasets are shown in Fig. \ref{fig:learned1} and Fig. \ref{fig:learned2}.
 \begin{figure}
   \centering
   \includegraphics[scale = 0.4]{raw1}
@@ -59,13 +57,13 @@ We implement the result using C++ and Qt framework. We use OpenGL for visualizat
 \caption{classified Dataset 2}
 \label{fig:learned2}
 \end{figure}
- Here we showed classification after 10 passes of both datasets. However, we discovered that passing datasets twice is already sufficient to obtain a consistent W. There is very little difference in outcome between 2 and 10 passes. 
+ Here we show classification after 10 passes of both datasets. However, we discovered that passing datasets twice is already sufficient to obtain a consistent W. There is very little difference in outcome between 2 and 10 passes. 
 
 \pagebreak
 
-Fig \ref{fig:learned1_apply2} shows another test case. In this case, we learn with Dataset 1 and use W to classify Dataset 2.\\
+Fig. \ref{fig:learned1_apply2} shows another test case. In this case, we learn with Dataset 1 and use W to classify Dataset 2.\\
 
-Wires and poles do not get classified very well for many potential reasons. One reason is they are consideraly "thinner features". Poles and wires have very little feature content in transverse direction. Other features are easier to classify because they are clumped. Size, density, and color information of clumped features are easier to extract.  We also note that we have much less samples of poles and wires in the  training set. This is especially true in our second test case where we learn data using Dataset 1 (which do not have many wires) and attempt classify Dataset 2. Fig. shows that wires are classified very poorly. \\
+Wires and poles do not get classified very well for many potential reasons. One reason is they are consideraly "thinner features". Poles and wires have very little feature content in transverse direction. Other features are easier to classify because they tend to be clumped together. Size, density, and color information of clumped features are easier to extract.  We also note that we have much less samples of poles and wires in the  training set. This is especially true in our second test case where we learn using Dataset 1 (which do not have many wires) and attempt classify Dataset 2. Fig. \ref{fig:learned1_apply2} shows that wires are classified very poorly. \\
 
 As often the case, choice of implemention is a direct tradeoff between implementation difficulty and CPU time. Our choice of C++ makes the learning and classification very fast. However, some implementation such as matrix multiplication is not trivial. Overall the algorithm is not difficult to implement.
 
@@ -76,4 +74,12 @@ As often the case, choice of implemention is a direct tradeoff between implement
 \label{fig:learned1_apply2}
 \end{figure}
 
+To evaluate robustness of the learned data, we apply $1 \sigma$ noise into Dataset 2. The classification result is shown in Fig \ref{fig:addnoiseto2}. Despite many misclassifications, facade and ground are still mostly correctly classified .
+
+\begin{figure}[h]
+  \centering
+\includegraphics[scale = 0.4]{addnoiseto2}
+\caption{classification results after noisy Dataset 2}
+\label{fig:addnoiseto2}
+\end{figure}
 \end{document}

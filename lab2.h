@@ -23,6 +23,7 @@ void readPointClouds1(char *fileName);
 void readPointClouds2(char *fileName);
 void findCentroid1();
 void findCentroid2();
+void addNoise2();
 
 void mat_init( double *in, int rows, int cols, double init_val );
 void mat_transpose( double *A, int na, int ma, double *C );

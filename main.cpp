@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <QtCore>
+#include <random>
 
 #include "lab2.h"
 #include "viewer.h"
@@ -11,10 +12,14 @@ unsigned long npoints;
 
 double pos_cent1[3];
 double pos_cent2[3];
+double mean_features2[10];
+double stddev_features2[10];
 
 PointCloud pointCloud1[90000];
 PointCloud pointCloud2[37000];
 PointCloud inpPointCloud[90000];
+
+std::default_random_engine generator;
 
 int main(int argc, char *argv[])
 {
@@ -45,6 +50,9 @@ int main(int argc, char *argv[])
 
     findCentroid1();
     findCentroid2();
+
+    //add noise of dataset2
+    addNoise2();
 
     viewer1.drawMode = 0; //raw data
     viewer1_learned.drawMode = 1;//learned
@@ -153,7 +161,7 @@ int main(int argc, char *argv[])
             }
         }
 
-#if 0
+#if 1
         //option to learn with second set also
 
         npoints = npoints2;
@@ -461,8 +469,57 @@ void readPointClouds2(char *fileName){
 
 //add noise to second dataset
 void addNoise2(){
+//first find mean of the features
+    double sum_features2[10];
+    unsigned short i;
+    unsigned long pcInd = 0;
+    PointCloud *pc;
 
+    //initialize to 0
+    for (i=0;i<10;i++){
+        sum_features2[i] = 0.0;
+    }
 
+    //cumulative sum
+    for (pcInd=0; pcInd < npoints2; pcInd++ ){
+        pc = &pointCloud2[pcInd];
+        for (i=0;i<10;i++){
+            sum_features2[i] += pc->features[i];
+        }
+    }
+
+    //find the mean
+    for (i=0;i<10;i++){
+        mean_features2[i] =  sum_features2[i]/npoints2;
+        //qDebug() << mean_features2[i];
+    }
+
+    //initialize to 0
+    for (i=0;i<10;i++){
+        sum_features2[i] = 0.0;
+    }
+
+    //cumulative sum of variance
+    for (pcInd=0; pcInd < npoints2; pcInd++ ){
+        pc = &pointCloud2[pcInd];
+        for (i=0;i<10;i++){
+            sum_features2[i] += (pc->features[i] - mean_features2[i])*(pc->features[i] - mean_features2[i]) ;
+        }
+    }
+
+    //find the variance
+   for (i=0;i<10;i++){
+       stddev_features2[i] =  sqrt(sum_features2[i]/npoints2);
+   }
+
+   //now...add the noise
+   for (pcInd=0; pcInd < npoints2; pcInd++ ){
+       pc = &pointCloud2[pcInd];
+       for (i=0;i<10;i++){
+           std::normal_distribution<double> distribution1( mean_features2[i],stddev_features2[i]);
+           pc->features[i] += distribution1(generator);
+       }
+   }
 
 }
 

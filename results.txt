@@ -1,0 +1,19 @@
+On Data without noise:
+
+True Positives = 5836
+True Negatives = 4471
+False Positives = 607
+False Negatives = 905
+Accuracy=0.872070
+
+Plots: figure_1_JPG.jpeg and figure_1_PNG.png
+
+Data with noise (0.5)
+
+True Positives = 5542
+True Negatives = 4289
+False Positives = 806
+False Negatives = 1091
+Accuracy=0.838250
+
+Plots: figure_2.png, figure_2_JPG.jpeg

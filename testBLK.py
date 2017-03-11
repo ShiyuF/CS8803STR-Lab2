@@ -10,7 +10,7 @@ from InstanceObtain import Instance
 def main():
     # initialize mean and covariance of prior
     iterations = 1
-    validateStep = 1000
+    validateStep = 10000
     a = 5
     mu_p = np.zeros(10)
     sigma_p = a * np.eye(10)
@@ -22,7 +22,7 @@ def main():
     # for target in classes:
     #     blk.append(BayesianLinearRegression(target, mu_p, sigma_p, sigma))
     #     print("Generated a BLK model for class %i." % (target,))
-    target1 = 1100
+    target1 = 1004
     target2 = 1400
     blk = BayesianLinearRegression(target1, target2, mu_p, sigma_p, sigma)
     print("Generated a BLK model.")
@@ -32,8 +32,8 @@ def main():
     itertime = np.zeros(iterations)
     training_time = 0
     for k in range(0, iterations):
-        # with open("training_set.node_features") as data:
-        with open("training_set_noise_0.5.node_features") as data:
+        with open("training_set.node_features") as data:
+        # with open("training_set_noise_0.5.node_features") as data:
             data = list(data)
             random.shuffle(data)
             for t in range(0, len(data)):
@@ -60,8 +60,8 @@ def main():
                     validateCorrect = 0
                     error = 0
 
-                    # with open("test_set.node_features") as validate:
-                    with open("test_set_noise_0.5.node_features") as validate:
+                    with open("test_set.node_features") as validate:
+                    # with open("test_set_noise_0.5.node_features") as validate:
                         while True:
                             validateline = validate.readline().strip().split()
                             validateline = [float(x) for x in validateline]
@@ -93,6 +93,47 @@ def main():
     #     blk[i].set_final_parameters()
     blk.set_final_parameters()
 
+    # Test on training set
+    train_numPosInstance = 0
+    train_numNegInstance = 0
+    train_correctPos = 0
+    train_correctNeg = 0
+    with open("training_set.node_features") as traindata:
+    # with open("training_set_noise_0.5.node_features") as traindata:
+        while True:
+            train_testline = traindata.readline().strip().split()
+            train_testline = [float(x) for x in train_testline]
+            if len(train_testline) == 0:
+                break
+            train_test_instance = Instance(train_testline)
+            if train_test_instance.label == target1:
+                train_numPosInstance += 1
+            elif target2 == 0 and train_test_instance.label != target1:
+                train_numNegInstance += 1
+            elif target2 != 0 and train_test_instance.label == target2:
+                train_numNegInstance += 1
+
+            # Test
+            train_test_mean, train_test_covariance = blk.prediction(train_test_instance)
+
+            if target2 == 0 and train_test_mean >= 0 and train_test_instance.label == target1:
+                train_correctPos += 1
+            elif target2 == 0 and train_test_mean < 0 and train_test_instance.label != target1:
+                train_correctNeg += 1
+            elif target2 != 0 and train_test_mean >= 0 and train_test_instance.label == target1:
+                train_correctPos += 1
+            elif target2 != 0 and train_test_mean < 0 and train_test_instance.label == target2:
+                train_correctNeg += 1
+    train_confusion = np.array([[train_correctPos, train_numPosInstance - train_correctPos], [train_numNegInstance - train_correctNeg, train_correctNeg]])
+    train_numInstance = train_numPosInstance + train_numNegInstance
+    train_correct = train_correctPos + train_correctNeg
+    train_accuracy = float(train_correct) / train_numInstance * 100
+    print("The number of total instances in the two classes: %i" % train_numInstance)
+    print("The number of correctlly classified: %i" % train_correct)
+    print("The accuracy of classification: %.2f %%" % train_accuracy)
+    print("The confusion matrix:")
+    print train_confusion
+
     # Test on test set
     numPosInstance = 0
     numNegInstance = 0
@@ -109,11 +150,11 @@ def main():
     ax.set_xlim(70, 280)
     ax.set_ylim(70, 280)
     ax.set_zlim(-10, 35)
-    ax.set_title("Predicted labels for Wire and Facade")
+    ax.set_title("Predicted labels for Veg and Facade")
 
     test_time = 0
-    # with open("test_set.node_features") as data:
-    with open("test_set_noise_0.5.node_features") as data:
+    with open("test_set.node_features") as data:
+    # with open("test_set_noise_0.5.node_features") as data:
         while True:
             testline = data.readline().strip().split()
             testline = [float(x) for x in testline]
@@ -168,7 +209,7 @@ def main():
         color = ['g']
     else:
         plotClasses = ['plotPredictedVeg', 'plotPredictedFacade']
-        color = ['k', 'y']
+        color = ['g', 'y']
     # plotClasses = ['plotPredictedVeg', 'plotPredictedWire', 'plotPredictedPole', 'plotPredictedGround', 'plotPredictedFacade']
     # color = ['g', 'k', 'r', 'b', 'y']
     i = 0

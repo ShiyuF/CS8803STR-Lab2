@@ -1,0 +1,275 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+CS8803: STR, Spring 2017, Lab-2
+\end_layout
+
+\begin_layout Author
+Authors: Marcus Pereira, Shiyu Feng and Jintasit Pravitra
+\end_layout
+
+\begin_layout Date
+Date: March 
+\begin_inset Formula $13^{th}$
+\end_inset
+
+, 2017
+\end_layout
+
+\begin_layout Section*
+Linear Support Vector Machine
+\end_layout
+
+\begin_layout Standard
+An online version of the Linear SVM classifier was implemeted based on the
+ notes from lecture-12.
+ The two classes considered were - Facade (1400) and Veg (1004).
+ The performance for online learning was not as good as compared to Gradient
+ Descent on Squared Loss and BLR.
+ For training and testing, the two original data sets were combined and
+ mixed at random.
+ Also, another set of training and test data was generated from the original
+ combined data sets and corrupted with noise to test the accuracy of the
+ Linear SVM classifier.
+ The linear SVM learner was fairly easy to implement in Python.
+ Based on the dot product 
+\begin_inset Formula $w^{T}f_{i}$
+\end_inset
+
+ and the node_id of the current observed point, the weights vector was updated
+ using one of the following two equations:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $w=w-2\alpha_{t}\lambda w$
+\end_inset
+
+ if 
+\begin_inset Formula $\left(w^{T}f_{i}>0\right)$
+\end_inset
+
+ and node_id = 1004 (true positive case)
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $w=w-2\alpha_{t}\lambda w$
+\end_inset
+
+ if 
+\begin_inset Formula $\left(w^{T}f_{i}<0\right)$
+\end_inset
+
+ and and node_id = 1400 (true negative case)
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $w=w-2\alpha_{t}\lambda w+\alpha_{t}\,y_{t}\,f_{i}$
+\end_inset
+
+ if 
+\begin_inset Formula $\left(w^{T}f_{i}<0\right)$
+\end_inset
+
+ and node_id = 1004 (false negative case)
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $w=w-2\alpha_{t}\lambda w+\alpha_{t}\,y_{t}\,f_{i}$
+\end_inset
+
+ if 
+\begin_inset Formula $\left(w^{T}f_{i}>0\right)$
+\end_inset
+
+ and node_id = 1400 (false positive case)
+\end_layout
+
+\begin_layout Section*
+Results
+\end_layout
+
+\begin_layout Standard
+The hyperparameters 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ and 
+\begin_inset Formula $\alpha_{t}$
+\end_inset
+
+ were chosen as follows: 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $\lambda=0.495$
+\end_inset
+
+ as anything lower than this was causing the classifier to have poor accuracy
+ as weights begin to diverge far away from the initial set of weights.
+ And, anything higher caused the weights to overfit and perform poorly on
+ test data and corrupted noisy data set.
+ 
+\begin_inset Newline newline
+\end_inset
+
+As far as 
+\begin_inset Formula $\alpha_{t,}$
+\end_inset
+
+, as per the notes in lecture-12, we pick it proportional to 
+\begin_inset Formula $1/\text{√t}$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Following are plots showing:
+\begin_inset Newline newline
+\end_inset
+
+1.) convergence of the classifier during training
+\begin_inset Newline newline
+\end_inset
+
+2.) the complete original 3D point cloud data set and performance of Linear
+ SVM on combined randomized test data set for Facade and Veg 
+\begin_inset Newline newline
+\end_inset
+
+3.) same as plot 2, but with corrupted features
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename Lab2_Boots/figure_3_convergence.png
+	lyxscale 10
+	scale 25
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab2_Boots/figure_1_PNG.png
+	lyxscale 10
+	scale 40
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename Lab2_Boots/figure_2_JPG.jpeg
+	lyxscale 10
+	scale 30
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

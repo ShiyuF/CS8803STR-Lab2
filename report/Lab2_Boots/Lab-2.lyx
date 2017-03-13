@@ -1,0 +1,1485 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2.5cm
+\topmargin 2.5cm
+\rightmargin 2.5cm
+\bottommargin 2.5cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+CS8803: STR, Spring 2017, Lab-2
+\end_layout
+
+\begin_layout Author
+Authors: Marcus Pereira, Shiyu Feng and Jintasit Pravitra
+\end_layout
+
+\begin_layout Date
+Date: March 
+\begin_inset Formula $13^{th}$
+\end_inset
+
+, 2017
+\end_layout
+
+\begin_layout Section*
+1.
+ Gradient Descent on Squared Loss
+\end_layout
+
+\begin_layout Subsection*
+1.1 Algorithm
+\end_layout
+
+\begin_layout Standard
+We define the loss function to be 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $l_{i}(t)=||W_{t}f_{i}-y_{i}||^{2}$
+\end_inset
+
+, 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+where 
+\begin_inset Formula $f_{i}\in\mathbb{R}^{10}$
+\end_inset
+
+ is a feature vector given by the problem.
+ 
+\begin_inset Formula $W\in\mathbb{R}^{5\times10}$
+\end_inset
+
+ is the weight matrix that we seek to learn.
+ 
+\begin_inset Formula $y_{i}\in\mathbb{R}^{5}$
+\end_inset
+
+ is an indicator vector corresponds to each label.
+ We remap the labels to be: 
+\begin_inset VSpace 8pt
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Veg : 
+\begin_inset Formula $y=[\ 1\ 0\ 0\ 0\ 0\ ]^{T}$
+\end_inset
+
+
+\begin_inset space \hspace{}
+\length 8pt
+\end_inset
+
+Wire :
+\begin_inset Formula $y=[\ 0\ 1\ 0\ 0\ 0\ ]^{T}$
+\end_inset
+
+
+\begin_inset space \hspace{}
+\length 8pt
+\end_inset
+
+Pole : 
+\begin_inset Formula $y=[\ 0\ 0\ 1\ 0\ 0\ ]^{T}$
+\end_inset
+
+
+\begin_inset space \hspace{}
+\length 8pt
+\end_inset
+
+Ground : 
+\begin_inset Formula $y=[\ 0\ 0\ 0\ 1\ 0\ ]^{T}$
+\end_inset
+
+
+\begin_inset space \hspace{}
+\length 8pt
+\end_inset
+
+Facade : 
+\begin_inset Formula $y=[\ 0\ 0\ 0\ 0\ 1\ ]^{T}$
+\end_inset
+
+
+\begin_inset VSpace 8pt
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+We use the update law:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Formula $W_{t+1}=W_{t}-\alpha\frac{dl}{dW},$
+\end_inset
+
+
+\begin_inset space \hspace{}
+\length 10pt
+\end_inset
+
+where 
+\begin_inset Formula $\frac{dl}{dW}=2(W_{t}f_{i}-y_{i})f_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+We choose the learning rate 
+\begin_inset Formula $\alpha=\frac{1}{\sqrt{T}}$
+\end_inset
+
+.
+ Our algorithm reshuffles the given data and pass them through the learning
+ algorithm several times.
+\end_layout
+
+\begin_layout Subsection*
+1.2 Results
+\end_layout
+
+\begin_layout Standard
+\noindent
+We implement the result using C++ and Qt framework.
+ We use OpenGL for visualization.
+ The result of classification after learning both datasets are shown in
+ Fig.1 (a)-(d).
+ Here we show classification after 10 passes of both datasets.
+ However, we discovered that passing datasets twice is already sufficient
+ to obtain a consistent 
+\begin_inset Formula $W$
+\end_inset
+
+.
+ There is very little difference in outcome between 2 and 10 passes.
+ Fig.
+ 2 shows another test case.
+ In this case, we learn with Dataset 1 and use 
+\begin_inset Formula $W$
+\end_inset
+
+ to classify Dataset 2.
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename /Users/shiyufeng/Documents/GeorgiaTech/Spring2017/CS8803STR/HW/Lab2/CS8803STR-Lab2/report/raw1.png
+	scale 16
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Actual Plot for dataset1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename /Users/shiyufeng/Documents/GeorgiaTech/Spring2017/CS8803STR/HW/Lab2/CS8803STR-Lab2/report/learned1.png
+	scale 16
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Classified Plot for dataset1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename /Users/shiyufeng/Documents/GeorgiaTech/Spring2017/CS8803STR/HW/Lab2/CS8803STR-Lab2/report/raw2.png
+	scale 16
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Actual Plot for dataset2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename /Users/shiyufeng/Documents/GeorgiaTech/Spring2017/CS8803STR/HW/Lab2/CS8803STR-Lab2/report/learned2.png
+	scale 16
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Classified Plot for dataset2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Learning Results for Gradient Descent on Squared Loss Fuction
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+Wires and poles do not get classified very well for many potential reasons.
+ One reason is they are consideraly "thinner features".
+ Poles and wires have very little feature content in transverse direction.
+ Other features are easier to classify because they tend to be clumped together.
+ Size, density, and color information of clumped features are easier to
+ extract.
+ We also note that we have much less samples of poles and wires in the training
+ set.
+ This is especially true in our second test case where we learn using Dataset
+ 1 (which do not have many wires) and attempt classify Dataset 2.
+ Fig.
+ 2 shows that wires are classified very poorly.
+ 
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename /Users/shiyufeng/Documents/GeorgiaTech/Spring2017/CS8803STR/HW/Lab2/CS8803STR-Lab2/report/learned1_apply2.png
+	scale 21
+
+\end_inset
+
+
+\size footnotesize
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Learning Dataset1, Classified Dataset2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "48text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename /Users/shiyufeng/Documents/GeorgiaTech/Spring2017/CS8803STR/HW/Lab2/CS8803STR-Lab2/report/addnoiseto2.png
+	scale 21
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Add noise to features vector
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset VSpace 8pt
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+As often the case, choice of implemention is a direct tradeoff between implement
+ation difficulty and CPU time.
+ Our choice of C++ makes the learning and classification very fast.
+ However, some implementation such as matrix multiplication is not trivial.
+ Overall the algorithm is not difficult to implement.
+ To evaluate robustness of the learned data, we apply 
+\begin_inset Formula $1\sigma$
+\end_inset
+
+ noise into Dataset 2.
+ The classification result is shown in Fig.
+ 3.
+ Despite many misclassifications, facade and ground are still mostly correctly
+ classified .
+\end_layout
+
+\begin_layout Section*
+2.
+ Linear Support Vector Machine
+\end_layout
+
+\begin_layout Subsection*
+2.1 Algorithm
+\end_layout
+
+\begin_layout Standard
+An online version of the Linear SVM classifier was implemeted based on the
+ notes from lecture-12.
+ The two classes considered were - Facade (1400) and Veg (1004).
+ The performance for online learning was not as good as compared to Gradient
+ Descent on Squared Loss and BLR.
+ For training and testing, the two original data sets were combined and
+ mixed at random.
+ Also, another set of training and test data was generated from the original
+ combined data sets and corrupted with noise to test the accuracy of the
+ Linear SVM classifier.
+ The linear SVM learner was fairly easy to implement in Python.
+ Based on the dot product 
+\begin_inset Formula $w^{T}f_{i}$
+\end_inset
+
+ and the node_id of the current observed point, the weights vector was updated
+ using one of the following two equations:
+\begin_inset VSpace 8pt
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $w=w-2\alpha_{t}\lambda w$
+\end_inset
+
+ if 
+\begin_inset Formula $\left(w^{T}f_{i}>0\right)$
+\end_inset
+
+ and node_id = 1004 (true positive case)
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $w=w-2\alpha_{t}\lambda w$
+\end_inset
+
+ if 
+\begin_inset Formula $\left(w^{T}f_{i}<0\right)$
+\end_inset
+
+ and and node_id = 1400 (true negative case)
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $w=w-2\alpha_{t}\lambda w+\alpha_{t}\,y_{t}\,f_{i}$
+\end_inset
+
+ if 
+\begin_inset Formula $\left(w^{T}f_{i}<0\right)$
+\end_inset
+
+ and node_id = 1004 (false negative case)
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $w=w-2\alpha_{t}\lambda w+\alpha_{t}\,y_{t}\,f_{i}$
+\end_inset
+
+ if 
+\begin_inset Formula $\left(w^{T}f_{i}>0\right)$
+\end_inset
+
+ and node_id = 1400 (false positive case)
+\end_layout
+
+\begin_layout Subsection*
+2.2 Results
+\end_layout
+
+\begin_layout Standard
+The hyperparameters 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ and 
+\begin_inset Formula $\alpha_{t}$
+\end_inset
+
+ were chosen as follows: 
+\end_layout
+
+\begin_layout Standard
+\noindent
+1) 
+\begin_inset Formula $\lambda=0.495$
+\end_inset
+
+ as anything lower than this was causing the classifier to have poor accuracy
+ as weights begin to diverge far away from the initial set of weights.
+ And, anything higher caused the weights to overfit and perform poorly on
+ test data and corrupted noisy data set.
+ 
+\end_layout
+
+\begin_layout Standard
+\noindent
+2) As far as 
+\begin_inset Formula $\alpha_{t,}$
+\end_inset
+
+, as per the notes in lecture-12, we pick it proportional to 
+\begin_inset Formula $1/\sqrt{T}$
+\end_inset
+
+ 
+\begin_inset VSpace 8pt
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+It is important to monitor error convergence of the classifier during training.
+ This graph for Linear SVM is shown in Fig.
+ 4.
+ Each 1000 learning steps, we calculate a sum of squared error and plot
+ them as the convergence curve.
+ From the graph, it is obvious that the error is decreasing rapidly.
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename figure_3_convergence.png
+	scale 13
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Error Convergence for Linear SVM
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset VSpace 8pt
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+After implementing the algorithm above, Fig.
+ 5 [Left] is the complete original 3D point cloud data set and Fig.
+ 5 [Right] is the performance of Linear SVM on combined randomized test
+ data set for Facade and Veg.
+ The confusion matrix elements (TP, TN, FP and FN) are shown in the graph,
+ too.
+ Then the algorithm trains on the noise corrupted version of features.
+ The result is shown in Fig.
+ 6.
+ From the plot, it hard to see the difference.
+ But based on the calculated accuracy, noise corrupted version will decrease
+ the accuracy from 87% to 82%.
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "45col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename 17236877_1498835666794928_798990938_o.png
+	scale 18
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Actual and Classified Point-clouds without Noise 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "45text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename 17273062_1498835670128261_1467320583_o.png
+	scale 18
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Actual and Classified Point-clouds with Corrupted Noise
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Section*
+3.
+ Bayesian Linear Regression
+\end_layout
+
+\begin_layout Subsection*
+3.1 Algorithm
+\end_layout
+
+\begin_layout Standard
+\noindent
+Our output model is 
+\begin_inset Formula $y_{t}=\theta^{T}\mathbf{x}_{t}+\epsilon_{t}$
+\end_inset
+
+, where 
+\begin_inset Formula $\theta$
+\end_inset
+
+ is the weight vector and 
+\begin_inset Formula $\epsilon_{t}\sim N(0,\sigma^{2})$
+\end_inset
+
+.
+ In Bayesian Linear Regression (BLK), we maitain a distribution to represent
+ our beliefs about what 
+\begin_inset Formula $\theta$
+\end_inset
+
+ is likely to be when given previous data points 
+\begin_inset Formula $D$
+\end_inset
+
+.
+ Using Bayes rule and natural parameterization, we can derive the update
+ rule for BLK.
+ Detailed derivations are in Lecture 13.
+ 
+\begin_inset Formula $P(\theta|D)\propto\exp\{(J+\frac{\sum_{i}y_{i}x_{i}}{\sigma^{2}})^{T}\theta-\frac{1}{2}\theta^{T}(P+\frac{\sum_{i}x_{i}x_{i}^{T}}{\sigma^{2}})\theta\}$
+\end_inset
+
+.
+ Update rules for information vector 
+\begin_inset Formula $J$
+\end_inset
+
+ and precision matrix 
+\begin_inset Formula $P$
+\end_inset
+
+ are as follows
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Formula $J\leftarrow J+\frac{y_{i}x_{i}}{\sigma^{2}}$
+\end_inset
+
+, 
+\begin_inset Formula $P\leftarrow P+\frac{x_{i}x_{i}^{T}}{\sigma^{2}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+Then we can use 
+\begin_inset Formula $J_{final}$
+\end_inset
+
+ and 
+\begin_inset Formula $P_{final}$
+\end_inset
+
+ to compute mean vector and covariance matrix.
+ 
+\begin_inset Formula $\Sigma_{final}=P_{final}^{-1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\mu_{final}=\Sigma_{final}J_{final}$
+\end_inset
+
+.
+ The distribution 
+\begin_inset Formula $P(\theta|D)$
+\end_inset
+
+ can be represented by two parameters 
+\begin_inset Formula $\mu_{final}$
+\end_inset
+
+ and 
+\begin_inset Formula $\Sigma_{final}$
+\end_inset
+
+ of Gaussian.
+ Finally, we use them to do prediction.
+ The mean of 
+\begin_inset Formula $y_{t+1}$
+\end_inset
+
+ is the output of BLK model.
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Formula $\mu_{y_{t+1}}=\mu_{\theta_{final}}^{T}\mathbf{x}_{t+1}$
+\end_inset
+
+, 
+\begin_inset Formula $\Sigma_{y_{t+1}}=\mathbf{x}_{t+1}^{T}\Sigma_{\theta_{final}}\mathbf{x}_{t+1}+\sigma^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are three parameters we need to define or tune.
+ Mean vector 
+\begin_inset Formula $\mu_{\theta}$
+\end_inset
+
+ and covariance matrix 
+\begin_inset Formula $\Sigma_{\theta}$
+\end_inset
+
+ of prior 
+\begin_inset Formula $P(\theta)$
+\end_inset
+
+, and variance 
+\begin_inset Formula $\sigma^{2}$
+\end_inset
+
+ of noise.
+ We firstly choose 
+\begin_inset Formula $\sigma^{2}=1$
+\end_inset
+
+ and 
+\begin_inset Formula $\mu_{\theta}$
+\end_inset
+
+ with a zero vector.
+ Then we assume each element of the weight vector is independent, which
+ causes a diagonal matrix for 
+\begin_inset Formula $\Sigma_{\theta}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection*
+3.2 Result
+\end_layout
+
+\begin_layout Standard
+Our BLK algorithm is implemented in Python.
+ It is easy to define a class BayesianLinearRegression to apply the learner
+ model.
+ We choose two classes Veg (1004) and Facade (1400) to apply BLK.
+ Veg is labeled 1 and Facade is labeled -1.
+ Points of other classes will be ignored.
+ Similarly, we randomly split the mixed dataset 70%/30% into training and
+ test set.
+ In order to moniter the error rate when learning, each 1000 steps, we test
+ current model on test set and obtain sum of squared error.
+ The error convergence curve is shown in Fig.
+ 7.
+ The error also convergences quickly.
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "45text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename /Users/shiyufeng/Documents/GeorgiaTech/Spring2017/CS8803STR/HW/Lab2/CS8803STR-Lab2/error_BLK.png
+	scale 25
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Error Convergence for BLK
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "45text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename /Users/shiyufeng/Documents/GeorgiaTech/Spring2017/CS8803STR/HW/Lab2/CS8803STR-Lab2/Actual.png
+	scale 14
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Actual Points for Mixed Dataset
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename /Users/shiyufeng/Documents/GeorgiaTech/Spring2017/CS8803STR/HW/Lab2/CS8803STR-Lab2/predicted_BLK.png
+	scale 22
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Predicted Points with BLK
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Point-clouds Graph for BLK
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset VSpace 8pt
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Even though monitoring error will slow down the training lagorithm, it is
+ very fast if we only consider the update steps, which is 444ms totally.
+ And test time is also pretty fast, 256ms.
+ After training, we test our model on both training set and test set.
+ The accuracy are 92.82% and 92.69%.
+ Confusion matrixs are as follows.
+ 
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\size footnotesize
+\begin_inset Formula $\begin{array}{ccc}
+Veg & Facade\\
+14880 & 836 & Veg\\
+1134 & 10582 & Facade
+\end{array}$
+\end_inset
+
+
+\begin_inset space \qquad{}
+\end_inset
+
+
+\begin_inset Formula $\begin{array}{ccc}
+Veg & Facade\\
+6397 & 344 & Veg\\
+520 & 4588 & Facade
+\end{array}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+The left is for training set, right is for test set.
+ In addition, Fig.
+ 8 (a) (b) show the actual and predicted point-clouds graph.
+ Aimed at Veg and Facade, online BLK learner has a good perfomance.
+ Meanwhile, we test our algorithm on other pairs of classes.
+ When we choose groud as one of them, the performance is very good with
+ a 99% accuracy.
+ But when considering wires, the performance becomes worse.
+ The reason could be that features of wires are not significantly different
+ from others.
+ The similarity between wire and other objects is big.
+ 
+\begin_inset VSpace 8pt
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+At the end, we introduce noise into features.
+ 
+\begin_inset Formula $\epsilon_{t}$
+\end_inset
+
+ is only noise for output, not features.
+ Apply BLK model on noise corrupted dataset and repeat same procedure.
+ Results are shown in Fig.
+ 9 and Fig.
+ 10.
+ From error convergence curve, we can observe some fluctuations.
+ And the accuracy is decreasing from 92% to 87%, but most are classified
+ correctly.
+ The confusion matrix for test set is 
+\begin_inset Formula $\begin{array}{cc}
+5804 & 829\\
+814 & 4281
+\end{array}$
+\end_inset
+
+.
+ 
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "45text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename /Users/shiyufeng/Documents/GeorgiaTech/Spring2017/CS8803STR/HW/Lab2/CS8803STR-Lab2/error_BLK_noise_0.5.png
+	scale 25
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Error Convergence for BLK
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "45text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename /Users/shiyufeng/Documents/GeorgiaTech/Spring2017/CS8803STR/HW/Lab2/CS8803STR-Lab2/Actual.png
+	scale 14
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Actual Points for Mixed Dataset
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename /Users/shiyufeng/Documents/GeorgiaTech/Spring2017/CS8803STR/HW/Lab2/CS8803STR-Lab2/predicted_BLK_noise_0.5.png
+	scale 22
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Predicted Points with BLK
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Point-clouds Graph for BLK
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+4.
+ Extra Credits
+\end_layout
+
+\begin_layout Standard
+After finishing the required 3 algorithms, we touch a little about online
+ learning logistic regression.
+ The model is 
+\begin_inset Formula $y_{t}=sign(\sigma(\theta^{T}x_{t}))$
+\end_inset
+
+, where 
+\begin_inset Formula $\sigma(x)=1/(1+\exp(-x))$
+\end_inset
+
+ is a sigmoid function.
+ We can also implement gradient descent on the loss function.
+ The difference between this and above 3 algorithms is the loss function.
+ 
+\begin_inset Formula $l(\theta,x,y)=log(1+\exp\{-y\theta^{T}x\})$
+\end_inset
+
+.
+ Similarly, we can implement a gradient descent on the loss function.
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Formula $\theta\leftarrow\theta+yx\frac{1}{1+\exp(y\theta^{T}x)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+We implement this algorithm, the accuracy is 87% and confusion matrix for
+ test set is 
+\begin_inset Formula $\begin{array}{cc}
+5890 & 851\\
+653 & 4425
+\end{array}$
+\end_inset
+
+.
+ The performance is worse than BLK.
+ There is no space to show the graph.
+ But 
+\series bold
+all useful graphs are included in the submitted folder
+\series default
+.
+\end_layout
+
+\end_body
+\end_document

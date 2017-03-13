@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  10 MAR 2017 19:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  10 MAR 2017 21:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -196,7 +196,7 @@ Package: subcaption 2016/02/20 v1.1-142 Sub-captions (AR)
 \c@subfigure=\count108
 \c@subtable=\count109
 )
-No file lab2.aux.
+(./lab2.aux)
 \openout1 = `lab2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
@@ -211,6 +211,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
 LaTeX Font Info:    ... okay on input line 16.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
 LaTeX Font Info:    ... okay on input line 16.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -314,34 +315,83 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 18.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 31.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 29.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 31.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 29.
 
 
-LaTeX Warning: Reference `fig:result from classification' on page 1 undefined o
-n input line 48.
+LaTeX Warning: Reference `fig:learned1' on page 1 undefined on input line 46.
 
-<raw_cloud.jpg, id=1, 1153.30875pt x 599.23875pt>
-File: raw_cloud.jpg Graphic file (type jpg)
- <use raw_cloud.jpg>
-Package pdftex.def Info: raw_cloud.jpg used on input line 51.
-(pdftex.def)             Requested size: 345.9953pt x 179.77301pt.
 
-<learned_cloud.jpg, id=2, 1153.30875pt x 599.23875pt>
-File: learned_cloud.jpg Graphic file (type jpg)
- <use learned_cloud.jpg>
-Package pdftex.def Info: learned_cloud.jpg used on input line 57.
-(pdftex.def)             Requested size: 345.9953pt x 179.77301pt.
+LaTeX Warning: Reference `fig:learned2' on page 1 undefined on input line 46.
 
-[1
+<raw1.png, id=1, 702.625pt x 343.2825pt>
+File: raw1.png Graphic file (type png)
+ <use raw1.png>
+Package pdftex.def Info: raw1.png used on input line 49.
+(pdftex.def)             Requested size: 281.04501pt x 137.31056pt.
 
-{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-[2 <./raw_cloud.jpg> <./learned_cloud.jpg>] (./lab2.aux)
+<learned1.png, id=2, 702.625pt x 343.2825pt>
+File: learned1.png Graphic file (type png)
+ <use learned1.png>
+Package pdftex.def Info: learned1.png used on input line 51.
+(pdftex.def)             Requested size: 281.04501pt x 137.31056pt.
+
+<raw2.png, id=3, 702.625pt x 343.2825pt>
+File: raw2.png Graphic file (type png)
+ <use raw2.png>
+Package pdftex.def Info: raw2.png used on input line 54.
+(pdftex.def)             Requested size: 281.04501pt x 137.31056pt.
+
+<learned2.png, id=4, 702.625pt x 343.2825pt>
+File: learned2.png Graphic file (type png)
+ <use learned2.png>
+Package pdftex.def Info: learned2.png used on input line 56.
+(pdftex.def)             Requested size: 281.04501pt x 137.31056pt.
+ [1
+
+{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2 <./r
+aw1.png (PNG copy)> <./learned1.png (PNG copy)> <./raw2.png (PNG copy)> <./lear
+ned2.png (PNG copy)>]
+
+LaTeX Warning: Reference `fig:learned1_apply2' on page 3 undefined on input lin
+e 64.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+
+ []
+
+
+LaTeX Warning: Reference `fig:learned1_apply2' on page 3 undefined on input lin
+e 66.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--67
+
+ []
+
+<learned1_apply2.png, id=24, 702.625pt x 343.2825pt>
+File: learned1_apply2.png Graphic file (type png)
+ <use learned1_apply2.png>
+Package pdftex.def Info: learned1_apply2.png used on input line 72.
+(pdftex.def)             Requested size: 281.04501pt x 137.31056pt.
+
+
+LaTeX Warning: Reference `fig:addnoiseto2' on page 3 undefined on input line 77
+.
+
+<addnoiseto2.png, id=25, 702.625pt x 333.245pt>
+File: addnoiseto2.png Graphic file (type png)
+ <use addnoiseto2.png>
+Package pdftex.def Info: addnoiseto2.png used on input line 81.
+(pdftex.def)             Requested size: 281.04501pt x 133.29562pt.
+ [3 <./learned1_apply2.png (PNG copy)> <./addnoiseto2.png (PNG copy)>] (./lab2.
+aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -350,13 +400,13 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 4267 strings out of 493014
- 62644 string characters out of 6133351
- 133961 words of memory out of 5000000
- 7743 multiletter control sequences out of 15000+600000
+ 4292 strings out of 493014
+ 63020 string characters out of 6133351
+ 133969 words of memory out of 5000000
+ 7763 multiletter control sequences out of 15000+600000
  11503 words of font info for 45 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,8n,39p,313b,282s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,8n,39p,704b,292s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
@@ -368,10 +418,10 @@ al/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/
 texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
 exlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/tex
 live/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on lab2.pdf (2 pages, 460657 bytes).
+Output written on lab2.pdf (3 pages, 465317 bytes).
 PDF statistics:
- 57 PDF objects out of 1000 (max. 8388607)
- 39 compressed objects within 1 object stream
+ 64 PDF objects out of 1000 (max. 8388607)
+ 41 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

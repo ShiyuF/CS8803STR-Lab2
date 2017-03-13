@@ -1,0 +1,487 @@
+#LyX file created by tex2lyx 2.2
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin /Users/shiyufeng/Documents/GeorgiaTech/Spring2017/CS8803STR/HW/Lab2/CS8803STR-Lab2/report/
+\textclass article
+\begin_preamble
+\title{Lab1 Report }
+\date{Due: Mar 13th 3017}
+\usepackage{url}
+\usepackage{color}
+\usepackage{algorithmic}
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+\author{Shiyu Feng, Ep Pravitra, and Marcus Pereira}
+
+
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package none
+\inputencoding auto
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize letterpaper
+\use_geometry true
+\use_package amsmath 2
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+maketitle
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Gradient Descent on Squared Loss
+\end_layout
+
+\begin_layout Subsection
+Algorithm
+\end_layout
+
+\begin_layout Standard
+We define the loss function to be 
+\begin_inset Formula \begin{align}
+l_i (t) &= ||W_t f_i - y_i||^2
+\end{align}
+\end_inset
+
+where 
+\begin_inset Formula $f_i \in  \mathbb{R}^{10}$
+\end_inset
+
+ is a feature vector given by the problem. 
+\begin_inset Formula $W \in  \mathbb{R}^{5x10}$
+\end_inset
+
+ is the weight matrix that we seek to learn. 
+\begin_inset Formula $y_i \in  \mathbb{R}^5$
+\end_inset
+
+ is an indicator vector corresponds to each label. We remap the labels to be. 
+\end_layout
+
+\begin_layout Itemize
+Veg : 
+\begin_inset Formula $y = [ \ 1 \ 0 \ 0 \ 0 \ 0 \ ]^T$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Wire :
+\begin_inset Formula $y = [ \ 0 \ 1 \ 0 \ 0 \ 0 \ ]^T$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Pole : 
+\begin_inset Formula $y = [ \ 0 \ 0 \ 1 \ 0 \ 0 \ ]^T$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Ground : 
+\begin_inset Formula $y = [ \ 0 \ 0 \ 0 \ 1 \ 0 \ ]^T$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Facade : 
+\begin_inset Formula $y = [ \ 0 \ 0 \ 0 \ 0 \ 1 \ ]^T$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+We use the update law. 
+\begin_inset Formula \begin{align}
+W_{t+1} &= W_t - \alpha  \frac{d l}{d W}
+\end{align}
+\end_inset
+
+where 
+\begin_inset Formula \begin{align}
+ \frac{d l}{d W} &= 2(W_t f_i - y_i) f_i
+\end{align}
+\end_inset
+
+We choose the learning rate 
+\begin_inset Formula $\alpha = \frac{1}{\sqrt{T}}$
+\end_inset
+
+. Our algorithm reshuffles the given data and pass them through the learning algorithm several times.
+\end_layout
+
+\begin_layout Subsection
+Results
+\end_layout
+
+\begin_layout Standard
+We implement the result using C++ and Qt framework. We use OpenGL for visualization. The result of classification after learning both datasets are shown in Fig. 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:learned1"
+
+\end_inset
+
+ and Fig. 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:learned2"
+
+\end_inset
+
+. 
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Graphics 
+	filename raw1.png
+	scale 40
+
+\end_inset
+
+ 
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+given Dataset 1
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics 
+	filename learned1.png
+	scale 40
+
+\end_inset
+
+ 
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+classified Dataset 1
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:learned1"
+
+\end_inset
+
+ 
+\begin_inset Graphics 
+	filename raw2.png
+	scale 40
+
+\end_inset
+
+ 
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+given Dataset 2
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics 
+	filename learned2.png
+	scale 40
+
+\end_inset
+
+ 
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+classified Dataset 2
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:learned2"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here we show classification after 10 passes of both datasets. However, we discovered that passing datasets twice is already sufficient to obtain a consistent W. There is very little difference in outcome between 2 and 10 passes.
+\end_layout
+
+\begin_layout Standard
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Fig. 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:learned1_apply2"
+
+\end_inset
+
+ shows another test case. In this case, we learn with Dataset 1 and use W to classify Dataset 2.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Wires and poles do not get classified very well for many potential reasons. One reason is they are consideraly "thinner features". Poles and wires have very little feature content in transverse direction. Other features are easier to classify because they tend to be clumped together. Size, density, and color information of clumped features are easier to extract. We also note that we have much less samples of poles and wires in the training set. This is especially true in our second test case where we learn using Dataset 1 (which do not have many wires) and attempt classify Dataset 2. Fig. 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:learned1_apply2"
+
+\end_inset
+
+ shows that wires are classified very poorly. 
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As often the case, choice of implemention is a direct tradeoff between implementation difficulty and CPU time. Our choice of C++ makes the learning and classification very fast. However, some implementation such as matrix multiplication is not trivial. Overall the algorithm is not difficult to implement.
+\end_layout
+
+\begin_layout Standard
+
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Graphics 
+	filename learned1_apply2.png
+	scale 40
+
+\end_inset
+
+ 
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+classification of Dataset 2 by learning Dataset 1
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:learned1_apply2"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To evaluate robustness of the learned data, we apply 
+\begin_inset Formula $1 \sigma$
+\end_inset
+
+ noise into Dataset 2. The classification result is shown in Fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:addnoiseto2"
+
+\end_inset
+
+. Despite many misclassifications, facade and ground are still mostly correctly classified .
+\end_layout
+
+\begin_layout Standard
+
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Graphics 
+	filename addnoiseto2.png
+	scale 40
+
+\end_inset
+
+ 
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+classification results after noisy Dataset 2
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:addnoiseto2"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

@@ -17,8 +17,6 @@ class BayesianLinearRegression:
             P: precision matrix
         """
 
-
-
         # attributes are not changing during Update
         self.targetClass1 = targetClass1
         self.targetClass2 = targetClass2
